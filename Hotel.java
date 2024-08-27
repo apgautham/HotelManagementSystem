@@ -49,11 +49,31 @@ public void cancelBooking(Customer customer){
   }
 }
 
-checkIn(Customer)
+public void checkIn(Customer customer){
+  Booking booking = customerVsBooking.get(customer);
+  if(booking==null || booking.getStatus()!=Booking.CONFIRMED){
+    System.out.println("Booking is not confirmed or no such booking available. Please book rooms first !!");
+  }
+  booking.setCheckinTime(System.currentTimeMillies());
+  booking.setStatus(Booking.CHECKED_IN);
+}
 
-checkOut(Customer)
+public void checkOut(Customer customer){
+  Booking booking = customerVsBooking.get(customer);
+  booking.setCheckinTime(System.currentTimeMillies());
+  booking.setStatus(Booking.CHECKED_OUT);
+}
 
-generateInvoice(Customer)
+public void generateInvoice(Customer customer){
+  Booking booking = customerVsBooking.get(customer);
+  //validations like if checkout not happened, checkout first
+  Invoice invoice = new Invoice(booking);
+  invoice.generateInvoice();
+}
 
-processPayment(Cash, Invoice)
+public void processPayment(PaymentMode.Cash, Invoice invoice){
+  //based on invoice, process payment
+  //we can make the payment mode as separate interface like Cash or Card and implement processPayment in child classes instead of having ENUMs.
+  System.out.println("payment processed");
+}
 }
